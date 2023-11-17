@@ -1,30 +1,27 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+
+
 import 'package:http/http.dart' as http;
-import 'package:products_kart/model/product_model.dart';
+import 'package:products_kart/model/products_model.dart';
+import 'package:products_kart/sevice/product_response.dart';
 import 'package:products_kart/util/api_endpoint.dart';
 
-class MatchApiService {
-  static Future<ProductModel> getProductInformation() async {
+
+class ProductApiService{
+  static Future<List<Products>> getProductInfo() async {
+    String url = ApiEndPoint.baseUrl();
     http.Response response = await http.get(
-      Uri.parse(ApiEndPoint.baseUrl()),
+      Uri.parse(url),
+
     );
     if (response.statusCode == 200) {
-      if (kDebugMode) {
-        print(response.body);
-      }
+      String body = response.body;
+      final data = jsonDecode(body);
 
-      final result = jsonDecode(response.body);
-      return ProductModel.fromJson(result);
-
+      ProductResponseList productResponseList= ProductResponseList.fromJson(data);
+      return productResponseList.products;
     } else {
-      throw "Something went wrong";
+      throw 'Something went wrong';
     }
   }
 }
-
-
-
-
-
-
