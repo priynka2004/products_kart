@@ -9,7 +9,22 @@ class ProductProvider extends ChangeNotifier {
   late Products productModel;
 
   ProductProvider() {
-    productApiService = productApiService;
+    productApiService = ProductApiService();
     isLoading = false;
+  }
+
+  Future<void> fetchProduct() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      productList = await ProductApiService.getProductInfo();
+
+      print(productList);
+    } catch (error) {
+      print('Error fetching products: $error');
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }
