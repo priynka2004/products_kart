@@ -32,7 +32,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   void likedProducts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool value = await SharedPrefService.getLayout();
+    bool value = await SharedPrefService.getProduct();
     isLiked = value;
     bool liked = prefs.getBool(widget.products!.id.toString()) ?? true;
     isLikedCount = await SharedPrefService.getLikedCount(widget.products!.id!.toInt());
@@ -87,7 +87,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               setState(() {});
                               likedCount();
                               unLikedProducts();
-                              SharedPrefService.setLayout(isLiked);
+                              SharedPrefService.setProduct(isLiked);
                               SharedPrefService.updateLikedProducts(
                                   widget.products!, isLiked);
                             },

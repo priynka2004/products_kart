@@ -2,27 +2,27 @@ import 'package:products_kart/model/products_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {
-  static String layoutKey = 'layout_key';
-  static const _likedCountEiyPrefix = 'likedCount_';
+  static String productKey = 'layout_key';
+  static const likedCount = 'likedCount_';
 
   static Future setLikedCount(int productId, int likedCount) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('$_likedCountEiyPrefix$productId', likedCount);
+    await prefs.setInt('$likedCount$productId', likedCount);
   }
 
   static Future<int> getLikedCount(int productId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('$_likedCountEiyPrefix$productId') ?? 0;
+    return prefs.getInt('$likedCount$productId') ?? 0;
   }
 
-  static Future setLayout(bool isList) async {
+  static Future setProduct(bool isList) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    sf.setBool(layoutKey, isList);
+    sf.setBool(productKey, isList);
   }
 
-  static Future<bool> getLayout() async {
+  static Future<bool> getProduct() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    bool value = sf.getBool(layoutKey) ?? true;
+    bool value = sf.getBool(productKey) ?? true;
     return value;
   }
 

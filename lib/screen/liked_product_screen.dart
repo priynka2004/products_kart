@@ -28,7 +28,6 @@ class LikedProductsScreen extends StatelessWidget {
                 String description = details[3];
                 String image = details[4];
 
-
                 return Dismissible(
                   key: Key('$title$index'),
                   direction: DismissDirection.endToStart,
