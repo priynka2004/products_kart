@@ -1,15 +1,12 @@
 import 'dart:convert';
-
-
 import 'package:http/http.dart' as http;
-import 'package:products_kart/model/products_model.dart';
-import 'package:products_kart/sevice/product_response.dart';
+import 'package:products_kart/product/model/products_model.dart';
+import 'package:products_kart/product/sevice/product_response.dart';
 import 'package:products_kart/util/api_endpoint.dart';
-
 
 class ProductApiService{
   static Future<List<Products>> getProductInfo() async {
-    String url = ApiEndPoint.baseUrl();
+    String url = ApiEndPoint.baseUrl;
     http.Response response = await http.get(
       Uri.parse(url),
 

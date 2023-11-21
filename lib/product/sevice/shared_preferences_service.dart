@@ -1,4 +1,4 @@
-import 'package:products_kart/model/products_model.dart';
+import 'package:products_kart/product/model/products_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {

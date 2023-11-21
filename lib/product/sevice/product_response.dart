@@ -1,4 +1,6 @@
-import 'package:products_kart/model/products_model.dart';
+
+
+import 'package:products_kart/product/model/products_model.dart';
 
 class ProductResponseList {
   List<Products> products;

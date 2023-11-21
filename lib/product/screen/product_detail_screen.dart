@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:products_kart/model/products_model.dart';
-import 'package:products_kart/screen/liked_product_screen.dart';
-import 'package:products_kart/sevice/shared_prefrence_service.dart';
+import 'package:products_kart/product/model/products_model.dart';
+import 'package:products_kart/product/screen/liked_product_screen.dart';
+import 'package:products_kart/product/sevice/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -57,7 +57,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         actions: [
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return const LikedProductsScreen();
+              return  LikedProductsScreen();
             }));
           }, icon: const Icon(Icons.add))
         ],
@@ -117,7 +117,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 width: 87,
                 child: Text("Rating ${widget.products!.rating}"),
               )
-              // Text("Rating ${widget.products!.rating}"),
             ],
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:products_kart/model/products_model.dart';
-import 'package:products_kart/provider/product_provider.dart';
-import 'package:products_kart/screen/product_detail_screen.dart';
+import 'package:products_kart/product/model/products_model.dart';
+import 'package:products_kart/product/provider/product_provider.dart';
+import 'package:products_kart/product/screen/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -36,7 +36,11 @@ class _ProductScreenState extends State<ProductScreen> {
             body: provider.isLoading
             ? const Center(
               child: CircularProgressIndicator(),
-            ) : ListView.builder(
+            ) : GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 4, crossAxisCount: 2
+              ),
                 itemCount: provider.productList.length,
                 itemBuilder: (context, index) {
                   Products productModel = provider.productList[index];
@@ -66,12 +70,12 @@ class _ProductScreenState extends State<ProductScreen> {
                             height: MediaQuery
                                 .of(context)
                                 .size
-                                .height * 0.15,
+                                .height * 0.12,
                           ),
                           ListTile(
-                            title: Text('Name : ${productModel.title}'),
+                            title: Text('${productModel.title}',style: TextStyle(fontSize: 12),),
                             subtitle: Text(
-                                "Price : \$${productModel.price.toString()}"),
+                                "\$${productModel.price.toString()}"),
                           ),
                         ],
                       ),
