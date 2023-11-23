@@ -6,7 +6,7 @@ import 'package:products_kart/util/api_endpoint.dart';
 
 class ProductApiService{
   static Future<List<Products>> getProductInfo() async {
-    String url = ApiEndPoint.baseUrl;
+    String url = ApiEndPoint.getProducts;
     http.Response response = await http.get(
       Uri.parse(url),
 

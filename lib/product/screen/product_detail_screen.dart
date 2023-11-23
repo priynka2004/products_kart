@@ -15,13 +15,14 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool isLiked = true;
-  int isLikedCount = 0;
+ // int isLikedCount = 0;
 
   void likedCount() async{
     setState(() {
-      isLikedCount = isLiked ? isLikedCount + 1 : isLikedCount - 1;
+     // isLikedCount = isLiked ? isLikedCount + 1 : isLikedCount-1;
     });
-    await SharedPrefService.setLikedCount(widget.products!.id!.toInt(), isLikedCount);
+   // await SharedPrefService.setLikedCount(widget.products!.id!.toInt() //isLikedCount
+         //);
   }
 
   @override
@@ -35,7 +36,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     bool value = await SharedPrefService.getProduct();
     isLiked = value;
     bool liked = prefs.getBool(widget.products!.id.toString()) ?? true;
-    isLikedCount = await SharedPrefService.getLikedCount(widget.products!.id!.toInt());
+   // isLikedCount = await SharedPrefService.getLikedCount(widget.products!.id!.toInt());
     setState(() {
       isLiked = liked;
     });
@@ -78,7 +79,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       Row(
                         children: [
-                          Text("$isLikedCount"),
+                          //Text("$isLikedCount"),
                           const SizedBox(
                             width: 8,
                           ),

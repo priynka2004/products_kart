@@ -1,9 +1,28 @@
+import 'dart:convert';
+
+import 'package:products_kart/login/model/login_model.dart';
 import 'package:products_kart/product/model/products_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {
   static String productKey = 'layout_key';
+  static String userKey = 'userDetails';
   static const likedCount = 'likedCount_';
+
+  static Future<void> setLoginUser(User user) async {
+    final userLogin = jsonEncode(user.toJson());
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(userKey, userLogin);
+  }
+
+  static Future<User?> getLoginUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userStr = prefs.getString(userKey);
+    if (userStr != null) {
+      return User.fromJson(jsonDecode(userStr));
+    }
+    return null;
+  }
 
   static Future setLikedCount(int productId, int likedCount) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,9 +63,4 @@ class SharedPrefService {
 
     prefs.setStringList('likedProducts', likedProducts);
   }
-
-  // static Future<List<String>> getLikedProducts() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getStringList('likedProducts') ?? [];
-  // }
 }
