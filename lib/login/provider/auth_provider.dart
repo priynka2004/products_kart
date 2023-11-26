@@ -3,7 +3,7 @@ import 'package:products_kart/login/model/login_model.dart';
 import 'package:products_kart/login/model/login_request_model.dart';
 import 'package:products_kart/login/service/login_api_service.dart';
 import 'package:products_kart/product/sevice/shared_preferences_service.dart';
-import 'package:products_kart/shared_pref.dart';
+
 
 class AuthProvider extends ChangeNotifier {
   AuthService authService;
@@ -19,7 +19,7 @@ class AuthProvider extends ChangeNotifier {
       User user = await authService.doLogin(request);
       isLoading = false;
       notifyListeners();
-      await SharedPreferenceService.saveUser(user);
+      await SharedPrefService.setLoginUser(user);
       notifyListeners();
       return true;
     } catch (e) {
