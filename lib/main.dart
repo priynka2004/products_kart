@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:products_kart/login/screen/login_screen.dart';
 import 'package:products_kart/login/service/login_api_service.dart';
 import 'package:products_kart/product/provider/product_provider.dart';
-import 'package:products_kart/product/screen/product_screen.dart';
 import 'package:provider/provider.dart';
-
 import 'login/provider/auth_provider.dart';
 
 void main() {
@@ -17,9 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-       providers: [
+      providers: [
         ChangeNotifierProvider(
-            create: (context) => AuthProvider((AuthService()))),
+          create: (context) => AuthProvider(AuthService()),
+        ),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
       ],
       child: MaterialApp(
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  const LoginScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

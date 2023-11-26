@@ -1,92 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:products_kart/login/service/login_api_service.dart';
+import 'package:products_kart/login/model/login_request_model.dart';
+import 'package:products_kart/login/provider/auth_provider.dart';
 import 'package:products_kart/product/screen/product_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController();
+class LoginScreenState extends State<LoginScreen> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool loading = false;
-  String errorText = '';
 
-  final AuthService authService = AuthService();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Future<void> _login(BuildContext context) async {
-    setState(() {
-      loading = true;
-      errorText = 'Place Enter Correct UserName and Password';
-    });
-
-    try {
-      if (!context.mounted) return;
-      Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) {
-          return const ProductScreen();
-        },
-      ));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } finally {
-      setState(() {
-        loading = false;
-      });
-    }
+  @override
+  void initState() {
+    nameController.text = 'kminchelle';
+    passwordController.text = '0lelplR';
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Center(
-        child: loading ? const CircularProgressIndicator() : Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Consumer<AuthProvider>(
+        builder: (context, authProvider, child) {
+          return Stack(
+            alignment: Alignment.center,
             children: [
-              TextFormField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          labelText: "Username",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "EnterUserName";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: "Password",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "EnterPassword";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          doLogin(context);
+                        },
+                        child: const Text("Login"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                errorText,
-                style: const TextStyle(color: Colors.red),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: loading ? null : () => _login(context),
-                child: loading
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
-              ),
+              if (authProvider.isLoading) const CircularProgressIndicator(),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
+  }
+
+  Future<void> doLogin(BuildContext context) async {
+    if (formKey.currentState?.validate() ?? false) {
+      final provider = Provider.of<AuthProvider>(context, listen: false);
+
+      LoginRequest loginRequest = LoginRequest(
+        name: nameController.text,
+        password: passwordController.text,
+      );
+
+      bool success = await provider.doLogin(loginRequest);
+      if (success && mounted) {
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProductScreen()),
+        );
+      }
+    }
   }
 }
